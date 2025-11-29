@@ -23,8 +23,7 @@ export default function CreationRebirthJutsuSimulator() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('parameters');
-    const [apiUrl, setApiUrl] = useState('http://localhost:5000');
-
+    const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL || 'http://localhost:5000');
     // async means it can wait for something to happen without freezing the whole app
     const generateSimulation = async () => {
         setLoading(true);
