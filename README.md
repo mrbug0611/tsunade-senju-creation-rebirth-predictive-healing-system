@@ -1,6 +1,6 @@
 ## Creation Rebirth (Sōzō Saisei) Simulator
 
-**A simulation of the most powerful medical ninjutsu in the Naruto series 
+**A simulation of the most powerful medical ninjutsu in the Naruto series** 
 
 View Live Demo: https://tsunade-senju-jutsu-frontend.onrender.com/ (Spins down after 15 minutes of inactivity)
 
