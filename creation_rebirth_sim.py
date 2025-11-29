@@ -1,6 +1,6 @@
 import gillespy2
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 class CreationRebirthModel(gillespy2.Model):
     """
@@ -12,7 +12,7 @@ class CreationRebirthModel(gillespy2.Model):
    3. Telomere Shortening = Rapid Division generates cellular stress which shortens lifespan
     """
 
-    def __init__(self, parameter_values=None):
+    def __init__(self, parameter_values=None, initial_states=None):
 
         # initialize the model
         super().__init__(name="Creation_Rebirth_Cellular_Kinetics")
@@ -33,6 +33,8 @@ class CreationRebirthModel(gillespy2.Model):
         if parameter_values:
             params.update(parameter_values)
 
+
+
         # Iterates over the params dictionary assigning keys as k and values as v
         # gillespy2.Parameter() Create one instance of the parameter class in for each entry of the dictionary
         # self.add_parameter() takes 1 parameter object or list of parameter objects and
@@ -49,7 +51,10 @@ class CreationRebirthModel(gillespy2.Model):
             "Telomere_Stress": 0, # Side Effect Counter
         }
 
-        self.add_species([gillespy2.Species(name=k, expression=v) for k, v in species_config.items()])
+        if initial_states:
+            species_config.update(initial_states)
+
+        self.add_species([gillespy2.Species(name=k, initial_value=v) for k, v in species_config.items()])
 
         # Define Reactions (transformation rules for how species are altered based on parameters)
 
@@ -65,7 +70,7 @@ class CreationRebirthModel(gillespy2.Model):
         # Reaction 2: Mitotic Regeneration
         # Damaged Cells + Active Enzymes to Healthy Cells + Active Enzymes + Telomere Stress
         r2 = gillespy2.Reaction(
-            name="Mitotic Regeneration",
+            name="Mitotic_Regeneration",
             reactants={"Damaged_Cells": 1, "Active_Enzymes": 1},
             products={"Healthy_Cells": 1, "Active_Enzymes": 1, "Telomere_Stress": 1},
             rate=self.listOfParameters["k_healing"],
@@ -86,3 +91,38 @@ class CreationRebirthModel(gillespy2.Model):
         # 101 snapshots taken
         self.timespan(np.linspace(0, 50, 101))
 
+def run_analysis(parameter_values=None, initial_states=None):
+    """
+   Runs the simulation and prints a summary of the 'medical' results.
+
+    Args:
+        parameter_values: Optional custom reaction rates
+        initial_states: Optional custom initial conditions    """
+
+    print("Initial Creation Rebirth Algorithm...")
+    model = CreationRebirthModel(parameter_values=parameter_values, initial_states=initial_states)
+
+    # Runs simulation using stochastic simulation solver
+    # Uses Tau_Leaping Solver for faster tau_leaping
+    results = model.run(solver=gillespy2.TauLeapingSolver)
+
+    # Extract Final Stats
+    final_healthy = results["Healthy_Cells"][-1]
+    final_damaged = results["Damaged_Cells"][-1]
+    stress_level = results["Telomere_Stress"][-1]
+
+    print("-" * 40)
+    print("TREATMENT REPORT: PATIENT ZERO")
+    print("-" * 40)
+    print(f"Final Healthy Tissue Count: {final_healthy}")
+    print(f"Remaining Damaged Tissue:   {final_damaged}")
+    print(f"Telomere Stress Accumulated: {stress_level}")
+
+    if final_damaged < 10:
+        print("\nSTATUS: COMPLETE RECOVERY")
+        print("Note: Patient requires immediate rest. Life expectancy slightly reduced.")
+    else:
+        print("\nSTATUS: PARTIAL RECOVERY - INSUFFICIENT CHAKRA")
+
+if __name__ == "__main__":
+    run_analysis()
