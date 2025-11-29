@@ -83,14 +83,10 @@ I use the following environment variable from Render to connect the front end to
 This project is open source. The concept was based on the Naruto Series written by Masashi Kishimoto
 
 
-## Contact
+### Contact
 - Open an Issue: The best way to report bugs or suggest features is by using the GitHub Issues tab in this repository.
 
 - Creator Contact: mmdwilliams0611@gmail.com : https://github.com/mrbug0611 
 
 
-
-
-     
-a
 
