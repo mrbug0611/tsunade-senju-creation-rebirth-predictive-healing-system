@@ -76,9 +76,21 @@ The backend models the jutsu as a set of chemical reactions
   _The application will open at http://localhost:5173_
 
 ### Environmental Variables
-I use the following environment variable from Render in order to connect the front end to the backend while in production. 
+I use the following environment variable from Render to connect the front end to the backend in production. 
 ```VITE_API_URL``` = ```https://your-backend-url.onrender.com```
 
 ### License 
 This project is open source. The concept was based on the Naruto Series written by Masashi Kishimoto
+
+
+## Contact
+- Open an Issue: The best way to report bugs or suggest features is by using the GitHub Issues tab in this repository.
+
+- Creator Contact: mmdwilliams0611@gmail.com : https://github.com/mrbug0611 
+
+
+
+
      
+a
+
